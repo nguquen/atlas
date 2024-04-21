@@ -45,7 +45,7 @@ type RevisionMutation struct {
 	addapplied           *int
 	total                *int
 	addtotal             *int
-	executed_at          *time.Time
+	executed_at          *string
 	execution_time       *time.Duration
 	addexecution_time    *time.Duration
 	error                *string
@@ -370,11 +370,12 @@ func (m *RevisionMutation) ResetTotal() {
 
 // SetExecutedAt sets the "executed_at" field.
 func (m *RevisionMutation) SetExecutedAt(t time.Time) {
-	m.executed_at = &t
+  v := t.Format(time.RFC3339)
+	m.executed_at = &v
 }
 
 // ExecutedAt returns the value of the "executed_at" field in the mutation.
-func (m *RevisionMutation) ExecutedAt() (r time.Time, exists bool) {
+func (m *RevisionMutation) ExecutedAt() (r string, exists bool) {
 	v := m.executed_at
 	if v == nil {
 		return
@@ -385,7 +386,7 @@ func (m *RevisionMutation) ExecutedAt() (r time.Time, exists bool) {
 // OldExecutedAt returns the old "executed_at" field's value of the Revision entity.
 // If the Revision object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *RevisionMutation) OldExecutedAt(ctx context.Context) (v time.Time, err error) {
+func (m *RevisionMutation) OldExecutedAt(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldExecutedAt is only allowed on UpdateOne operations")
 	}

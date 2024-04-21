@@ -40,7 +40,7 @@ func (Revision) Fields() []ent.Field {
 		field.Int("total").
 			NonNegative().
 			Default(0),
-		field.Time("executed_at").
+		field.String("executed_at").
 			Immutable(),
 		field.Int64("execution_time").
 			GoType(time.Duration(0)),

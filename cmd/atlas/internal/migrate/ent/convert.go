@@ -6,7 +6,11 @@
 
 package ent
 
-import "ariga.io/atlas/sql/migrate"
+import (
+	"time"
+
+	"ariga.io/atlas/sql/migrate"
+)
 
 // SetRevision takes the values for each field from the given migrate.Revision.
 func (rc *RevisionCreate) SetRevision(rev *migrate.Revision) *RevisionCreate {
@@ -27,13 +31,14 @@ func (rc *RevisionCreate) SetRevision(rev *migrate.Revision) *RevisionCreate {
 
 // AtlasRevision returns an migrate.Revision from the current Revision.
 func (r *Revision) AtlasRevision() *migrate.Revision {
+  t, _ := time.Parse(time.RFC3339, r.ExecutedAt)
 	return &migrate.Revision{
 		Version:         r.ID,
 		Description:     r.Description,
 		Type:            r.Type,
 		Applied:         r.Applied,
 		Total:           r.Total,
-		ExecutedAt:      r.ExecutedAt,
+		ExecutedAt:      t,
 		ExecutionTime:   r.ExecutionTime,
 		Error:           r.Error,
 		ErrorStmt:       r.ErrorStmt,
